@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Watch Later</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Your Watch Later List</h1>
+        <a href="index.html">Back to Home</a>
+    </header>
+
+    <section id="watch-later-list" class="movie-section">
+        <!-- Movies will be dynamically listed here -->
+    </section>
+
+    <script>
+        // Load watch later movies from localStorage
+        document.addEventListener('DOMContentLoaded', () => {
+            const watchLaterMovies = JSON.parse(localStorage.getItem('watchLater')) || [];
+            const watchLaterList = document.getElementById('watch-later-list');
+
+            if (watchLaterMovies.length === 0) {
+                watchLaterList.innerHTML = '<p>No movies added to Watch Later.</p>';
+            } else {
+                watchLaterMovies.forEach(movie => {
+                    const movieItem = document.createElement('div');
+                    movieItem.classList.add('watch-later-card');
+                    movieItem.innerHTML = `
+                        <img src="https://image.tmdb.org/t/p/w200${movie.poster_path}" alt="${movie.title}">
+                        <p>${movie.title}</p>
+                    `;
+                    watchLaterList.appendChild(movieItem);
+                });
+            }
+        });
+    </script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212; /* Dark background */
+            color: #fff; /* White text */
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            padding: 20px;
+            text-align: center;
+            background-color: #141414; /* Dark header */
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+
+        header a {
+            color: #e50914; /* Netflix red */
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        header a:hover {
+            text-decoration: underline;
+        }
+
+        #watch-later-list {
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Responsive grid */
+            gap: 15px;
+        }
+
+        .watch-later-card {
+            background-color: #222; /* Darker card background */
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.2s;
+        }
+
+        .watch-later-card:hover {
+            transform: scale(1.05); /* Slight zoom on hover */
+        }
+
+        .watch-later-card img {
+            width: 100%;
+            height: auto;
+        }
+
+        .watch-later-card p {
+            padding: 10px;
+            font-size: 14px;
+            text-align: center;
+            color: #fff; /* White text for titles */
+        }
+    </style>
+</body>
+</html>
