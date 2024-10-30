@@ -112,29 +112,53 @@ function clearMovies() {
 
 // Watch Later list handling
 function addToWatchLater() {
+    const movieTitle = document.getElementById('modal-title').textContent;
+    const moviePoster = document.getElementById('modal-poster').src;
+
     let watchLater = JSON.parse(localStorage.getItem('watchLater')) || [];
-    if (!watchLater.includes(title)) {
-        watchLater.push(title);
+    
+    // Check if the movie is already in the Watch Later list
+    if (!watchLater.some(movie => movie.title === movieTitle)) {
+        watchLater.push({ title: movieTitle, poster: moviePoster });
         localStorage.setItem('watchLater', JSON.stringify(watchLater));
-        alert(`${title} added to Watch Later`);
+        alert(`${movieTitle} added to Watch Later`);
+    } else {
+        alert(`${movieTitle} is already in your Watch Later list.`);
     }
 }
 
+// Function to display Watch Later items
+function displayWatchLaterItems() {
+    const watchLater = JSON.parse(localStorage.getItem('watchLater')) || [];
+    const watchLaterContainer = document.getElementById('watch-later-container');
+    
+    watchLaterContainer.innerHTML = ''; // Clear previous items
+
+    watchLater.forEach(item => {
+        const itemElement = document.createElement('div');
+        itemElement.classList.add('watch-later-item');
+        itemElement.innerHTML = `
+            <img src="${item.poster}" alt="${item.title}">
+            <p>${item.title}</p>
+            <button onclick="removeFromWatchLater('${item.title}')">Remove</button>
+        `;
+        watchLaterContainer.appendChild(itemElement);
+    });
+}
+
+// Load Watch Later items on page load
 window.onload = () => {
     fetchPopularMovies();
+    displayWatchLaterItems(); // Show Watch Later items without sign-in
 };
-
 
 // Audio and toggle setup
 const backgroundMusic = document.getElementById('background-music');
 const toggleSoundButton = document.getElementById('toggle-sound');
 
 // Play music on load
-window.onload = () => {
-    fetchPopularMovies();
-    backgroundMusic.play();
-    toggleSoundButton.textContent = '🔊';  // Sound on icon
-};
+backgroundMusic.play();
+toggleSoundButton.textContent = '🔊';  // Sound on icon
 
 // Toggle sound function
 function toggleSound() {
@@ -147,27 +171,15 @@ function toggleSound() {
     }
 }
 
-const watchLater = JSON.parse(localStorage.getItem('watchLater')) || [];
-
-// Function to add movie to Watch Later list
-function addToWatchLater() {
-    const movieTitle = document.getElementById('modal-title').textContent;
-    
-    if (!watchLater.some(movie => movie.title === movieTitle)) {
-        watchLater.push({ title: movieTitle });
-        localStorage.setItem('watchLater', JSON.stringify(watchLater));
-        alert(`${movieTitle} added to Watch Later`);
-    } else {
-        alert(`${movieTitle} is already in your Watch Later list.`);
-    }
+// Optional: Remove movie from Watch Later list
+function removeFromWatchLater(movieTitle) {
+    let watchLater = JSON.parse(localStorage.getItem('watchLater')) || [];
+    watchLater = watchLater.filter(movie => movie.title !== movieTitle);
+    localStorage.setItem('watchLater', JSON.stringify(watchLater));
+    displayWatchLaterItems(); // Refresh the Watch Later list
 }
 
 // Close modal function
-function closeModal() {
-    document.getElementById('movie-modal').style.display = 'none';
-}
-
-
 function closeModal() {
     const modal = document.getElementById('movie-modal');
     modal.style.display = 'none'; // Hide the modal
@@ -179,48 +191,4 @@ window.onclick = function(event) {
     if (event.target === modal) {
         modal.style.display = 'none';
     }
-}
-function addToWatchLater(movie) {
-    const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
-    if (!currentUser) {
-        alert('Please log in to add movies to your Watch Later list.');
-        return;
-    }
-
-    const users = JSON.parse(localStorage.getItem('users')) || [];
-    const userIndex = users.findIndex(user => user.username === currentUser.username);
-
-    if (!users[userIndex].watchLater.some(watchMovie => watchMovie.title === movie.title)) {
-        users[userIndex].watchLater.push(movie);
-        localStorage.setItem('users', JSON.stringify(users));
-        sessionStorage.setItem('currentUser', JSON.stringify(users[userIndex])); // Update currentUser
-        alert(`${movie.title} added to Watch Later`);
-    } else {
-        alert(`${movie.title} is already in your Watch Later list.`);
-    }
-}
-
-// Toggle between Sign In and Sign Up forms with smooth transition
-function toggleAuthForms() {
-    const signInForm = document.getElementById('signInForm');
-    const signUpForm = document.getElementById('signUpForm');
-
-    signInForm.classList.toggle('hidden');
-    signUpForm.classList.toggle('hidden');
-}
-
-// Dummy sign-in function
-function signIn() {
-    const username = document.getElementById('signInUsername').value;
-    sessionStorage.setItem('currentUser', JSON.stringify({ username }));
-    alert(`Welcome back, ${username}!`);
-    window.location.href = 'index.html';
-}
-
-// Dummy sign-up function
-function signUp() {
-    const username = document.getElementById('signUpUsername').value;
-    sessionStorage.setItem('currentUser', JSON.stringify({ username }));
-    alert(`Account created! Welcome, ${username}`);
-    window.location.href = 'index.html';
 }

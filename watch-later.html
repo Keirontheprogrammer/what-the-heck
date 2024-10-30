@@ -5,39 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Watch Later</title>
     <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <header>
-        <h1>Your Watch Later List</h1>
-        <a href="index.html">Back to Home</a>
-    </header>
-
-    <section id="watch-later-list" class="movie-section">
-        <!-- Movies will be dynamically listed here -->
-    </section>
-
-    <script>
-        // Load watch later movies from localStorage
-        document.addEventListener('DOMContentLoaded', () => {
-            const watchLaterMovies = JSON.parse(localStorage.getItem('watchLater')) || [];
-            const watchLaterList = document.getElementById('watch-later-list');
-
-            if (watchLaterMovies.length === 0) {
-                watchLaterList.innerHTML = '<p>No movies added to Watch Later.</p>';
-            } else {
-                watchLaterMovies.forEach(movie => {
-                    const movieItem = document.createElement('div');
-                    movieItem.classList.add('watch-later-card');
-                    movieItem.innerHTML = `
-                        <img src="https://image.tmdb.org/t/p/w200${movie.poster_path}" alt="${movie.title}">
-                        <p>${movie.title}</p>
-                    `;
-                    watchLaterList.appendChild(movieItem);
-                });
-            }
-        });
-    </script>
-
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -98,5 +65,60 @@
             color: #fff; /* White text for titles */
         }
     </style>
+</head>
+<body>
+    <header>
+        <h1>Your Watch Later List</h1>
+        <a href="index.html">Back to Home</a>
+    </header>
+
+    <section id="watch-later-list" class="movie-section">
+        <!-- Movies will be dynamically listed here -->
+    </section>
+
+    <script>
+        // Load watch later movies from localStorage
+        document.addEventListener('DOMContentLoaded', () => {
+            const watchLaterMovies = JSON.parse(localStorage.getItem('watchLater')) || [];
+            const watchLaterList = document.getElementById('watch-later-list');
+
+            if (watchLaterMovies.length === 0) {
+                watchLaterList.innerHTML = '<p>No movies added to Watch Later.</p>';
+            } else {
+                watchLaterMovies.forEach(movie => {
+                    const movieItem = document.createElement('div');
+                    movieItem.classList.add('watch-later-card');
+                    // Check if poster_path exists
+                    const imageUrl = movie.poster_path ? `https://image.tmdb.org/t/p/w200${movie.poster_path}` : 'path/to/default/image.jpg';
+                    movieItem.innerHTML = `
+                        <img src="${imageUrl}" alt="${movie.title}">
+                        <p>${movie.title}</p>
+                    `;
+                    watchLaterList.appendChild(movieItem);
+                });
+            }
+        });
+
+        // Example function to add a movie to Watch Later (for testing)
+        function addToWatchLater(movie) {
+            let watchLater = JSON.parse(localStorage.getItem('watchLater')) || [];
+
+            // Check if movie is already in the list
+            if (!watchLater.some(item => item.title === movie.title)) {
+                watchLater.push({
+                    title: movie.title,
+                    poster_path: movie.poster_path  // Make sure to store poster_path
+                });
+                localStorage.setItem('watchLater', JSON.stringify(watchLater));
+                alert(`${movie.title} added to Watch Later`);
+            } else {
+                alert(`${movie.title} is already in your Watch Later list.`);
+            }
+        }
+
+        // Example of how to call addToWatchLater function
+        // Uncomment to test adding a movie
+        // addToWatchLater({ title: 'Inception', poster_path: '/qJ2tW6WMUDux911r6m7haRef0WH.jpg' });
+    </script>
 </body>
 </html>
