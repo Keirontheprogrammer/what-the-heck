@@ -271,3 +271,158 @@
 .profile-dropdown .dropdown-content a:hover {
     background-color: #555;
 }
+
+
+/* Movie Card Container */
+.carousel {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem; /* Adds spacing between cards */
+    padding: 1rem;
+}
+
+/* Movie Card Styling */
+.movie-card {
+    background-color: #222;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: #fff;
+    transition: transform 0.3s ease;
+    max-width: 100%; /* Prevents overflow */
+}
+
+.movie-card:hover {
+    transform: scale(1.05);
+}
+
+/* Movie Poster */
+.movie-card img {
+    width: 100%;
+    height: auto;
+    border-bottom: 2px solid #555;
+}
+
+/* Movie Title */
+.movie-card p {
+    font-size: 1rem;
+    padding: 0.5rem;
+    text-align: center;
+    margin: 0;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .carousel {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+
+    .movie-card p {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .carousel {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 0.5rem;
+    }
+
+    .movie-card p {
+        font-size: 0.8rem;
+    }
+}
+
+/* Container for Movie Cards */
+.carousel {
+    display: flex;
+    flex-wrap: wrap;  /* Ensures items wrap onto new lines */
+    gap: 1rem;
+    justify-content: center;  /* Centers cards in the row */
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+/* Individual Movie Card */
+.movie-card {
+    flex: 1 1 180px; /* Allows cards to grow/shrink */
+    max-width: 220px; /* Constrains max width */
+    min-width: 150px; /* Ensures a minimum width for smaller screens */
+    background-color: #222;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: #fff;
+    transition: transform 0.3s ease;
+}
+
+.movie-card:hover {
+    transform: scale(1.05);
+}
+
+/* Movie Poster */
+.movie-card img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-bottom: 2px solid #555;
+}
+
+/* Movie Title */
+.movie-card p {
+    font-size: 1rem;
+    padding: 0.5rem;
+    text-align: center;
+    margin: 0;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .movie-card {
+        min-width: 140px; /* Smaller width on tablets */
+    }
+
+    .movie-card p {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .movie-card {
+        min-width: 120px; /* Smaller width on mobile */
+    }
+
+    .movie-card p {
+        font-size: 0.8rem;
+    }
+}
+
+
+.trailers-section {
+    text-align: center;
+    padding: 20px;
+}
+
+.trailers-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.trailer-item {
+    width: 300px;
+    text-align: center;
+}
+
+.trailer-item iframe {
+    width: 100%;
+    height: auto;
+}
+
+@media (max-width: 768px) {
+    .trailer-item {
+        width: 100%;
+        max-width: 400px;  /* Optional: Limit max width for mobile */
+    }
+}
